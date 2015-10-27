@@ -116,37 +116,6 @@ int main()
 	return 0;
 }
 
-/*
-void readInts(int * data, int n)
-{
-	ifstream fin("random.txt");
-
-	if (fin.fail())
-      return;
-   
-	for(int i = 0; i < n - 1 && !fin.fail(); ++i)
-		fin >> data[i];
-
-	// close the file
-	fin.close();
-	return;
-}
-
-void readFloats(float * data, int n)
-{
-	ifstream fin("random.txt");
-
-	if (fin.fail())
-      return;
-   
-	for(int i = 0; i < n - 1 && !fin.fail(); ++i)
-		fin >> data[i];
-
-	// close the file
-	fin.close();
-	return;
-} */
-
 void randomi(int * data, int n)
 {
    	srand(time(NULL));
