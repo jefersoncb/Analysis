@@ -7,91 +7,116 @@
 #include "sortQuick.h"
 #include "sortSelection.h"
 
-#define NSQUARED 8
-#define NLOGN 8
+#define NSQUARED_MAX 30000
+#define NLOGN_MAX 3000000
 
 using namespace std;
 
-void readInts(int * data, int n);
-void readFloats(float * data, int n);
+void randomf(float * data, int n);
+void randomi(int * data, int n);
 
 int main()
 {
-	// number of random numbers to use
-	int nSquared[] = { 100, 1000, 10000, 20000, 30000, 100000, 150000, 200000 };
-	int nLogn[]    = { 100, 1000, 10000, 100000, 500000, 1000000, 10000000, 100000000 };
+	// initialize the file streams
+	ofstream nsquaredinputs("nsi.txt");
+	ofstream bubbletimes("bubblei.txt");
+	ofstream selectiontimes("selectioni.txt");
 
+/*
 	cout << "   Inputs   |     Bubbble     |    Selection" << endl
-	     << "________________________________________________" << endl;
+	     << "________________________________________________" << endl;*/
 
 	// make the buffer as long as it needs to be
-	int * data = new int[nSquared[NSQUARED - 1]];
+	float * data = new float[NSQUARED_MAX];
 
-	for (int i = 0; i < NSQUARED; i++)
+	for (int i = 1000; i <= NSQUARED_MAX; i += 1000)
 	{
 		// output the number of inputs
-		cout << setw(11) << nSquared[i] << " | ";
+		// cout << setw(11) << i << "   ";
+		nsquaredinputs << i << endl;
 
 		// read in the correct number of random numbers
-		readInts(data, nSquared[i]);
+		randomf(data, i);
 
 		// time the bubble sort
 		long timeBefore = clock();
-		sortBubble(data, nSquared[i]);
+		sortBubble(data, i);
 		long timeAfter = clock();
 
-		cout << setw(15) << timeAfter - timeBefore << " | ";
+		// cout << setw(15) << timeAfter - timeBefore << "   ";
+		bubbletimes << timeAfter - timeBefore << endl;
 
-		readInts(data, nSquared[i]);
+		randomf(data, i);
 
 		// time the selection sort
 		timeBefore = clock();
-		sortSelection(data, nSquared[i]);
+		sortSelection(data, i);
 		timeAfter = clock();
 
-		cout << setw(15) << timeAfter - timeBefore << endl;
+		// cout << setw(15) << timeAfter - timeBefore << endl;
+		selectiontimes << timeAfter - timeBefore << endl;
 	}
+
+	nsquaredinputs.close();
+	bubbletimes.close();
+	selectiontimes.close();
 
 	delete [] data;
 
 	/* now do the same thing for the nlogn sorts */
 
+	// initialize the file streams
+	ofstream nlogninputs("lgni.txt");
+	ofstream quicktimes("quicki.txt");
+	ofstream heaptimes("heapi.txt");
+
+/*
 	cout << "   Inputs   |     Quick     |    Heap" << endl
-	     << "___________________________________________" << endl;
+	     << "___________________________________________" << endl;*/
 
 	// make the buffer as long as it needs to be
-	data = new int[nLogn[NLOGN - 1]];
+	data = new float[NLOGN_MAX];
 
-	for (int i = 0; i < NLOGN; i++)
+	for (int i = 100000; i <= NLOGN_MAX; i += 100000)
 	{
 		// output the number of inputs
-		cout << setw(11) << nLogn[i] << " | ";
+		// cout << setw(11) << i << "   ";
+		nlogninputs << i << endl;
 
 		// read in the correct number of random numbers
-		readInts(data, nLogn[i]);
+		randomf(data, i);
 
 		// time the quick bubble sort
 		long timeBefore = clock();
-		sortQuick(data, nLogn[i]);
+		sortQuick(data, i);
 		long timeAfter = clock();
 
-		cout << setw(13) << timeAfter - timeBefore << " | ";
+		// cout << setw(13) << timeAfter - timeBefore << "   ";
+		quicktimes << timeAfter - timeBefore << endl;
 
-		readInts(data, nSquared[i]);
+		randomf(data, i);
 
 		// time the heap sort
 		timeBefore = clock();
-		sortHeap(data, nSquared[i]);
+		sortHeap(data, i);
 		timeAfter = clock();
 
-		cout << setw(13) << timeAfter - timeBefore << endl;
+		// cout << setw(13) << timeAfter - timeBefore << endl;
+		heaptimes << timeAfter - timeBefore << endl;
 	}
 
 	delete [] data;
 
+	nlogninputs.close();
+	quicktimes.close();
+	heaptimes.close();
+
+	cout << "Done" << endl;
+
 	return 0;
 }
 
+/*
 void readInts(int * data, int n)
 {
 	ifstream fin("random.txt");
@@ -120,4 +145,22 @@ void readFloats(float * data, int n)
 	// close the file
 	fin.close();
 	return;
+} */
+
+void randomi(int * data, int n)
+{
+   	srand(time(NULL));
+
+	// output the random numbers
+	for (int i = 0; i < n; i++)
+    	data[i] = (rand() % 100000) + 1;
+}
+
+void randomf(float * data, int n)
+{
+   	srand(time(NULL));
+
+	// output the random numbers
+	for (int i = 0; i < n; i++)
+    	data[i] = (rand() % 100000) + 1;
 }
