@@ -25,7 +25,7 @@ int main()
 	     << "________________________________________________" << endl;
 
 	// make the buffer as long as it needs to be
-	int * data = new int[100000];
+	int * data = new int[nSquared[NSQUARED - 1]];
 
 	for (int i = 0; i < NSQUARED; i++)
 	{
@@ -54,7 +54,40 @@ int main()
 
 	delete [] data;
 
-	// now do the same thing for the nlogn sorts
+	/* now do the same thing for the nlogn sorts */
+
+	cout << "   Inputs   |     Quick     |    Heap" << endl
+	     << "___________________________________________" << endl;
+
+	// make the buffer as long as it needs to be
+	data = new int[nLogn[NLOGN - 1]];
+
+	for (int i = 0; i < NLOGN; i++)
+	{
+		// output the number of inputs
+		cout << setw(11) << nLogn[i] << " | ";
+
+		// read in the correct number of random numbers
+		readInts(data, nLogn[i]);
+
+		// time the quick bubble sort
+		long timeBefore = clock();
+		sortQuick(data, nLogn[i]);
+		long timeAfter = clock();
+
+		cout << setw(13) << timeAfter - timeBefore << " | ";
+
+		readInts(data, nSquared[i]);
+
+		// time the heap sort
+		timeBefore = clock();
+		sortHeap(data, nSquared[i]);
+		timeAfter = clock();
+
+		cout << setw(13) << timeAfter - timeBefore << endl;
+	}
+
+	delete [] data;
 
 	return 0;
 }
